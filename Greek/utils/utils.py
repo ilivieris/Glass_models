@@ -56,7 +56,7 @@ def cross_validation(model, X:np.ndarray=None, Y:np.ndarray=None, n_splits:int=3
                     eval_metric = 'auc', 
                     eval_set = [ (X[train], Y[train]), (X[test], Y[test]) ],
                     sample_weight = [weights[int(x)] for x in Y[train]],
-                    verbose = 50);
+                    verbose = 100);
         elif (type(model).__name__ == 'LGBMClassifier'):
             model.fit(X[train], Y[train], 
                     eval_metric = 'logloss', 
