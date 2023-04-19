@@ -1,13 +1,8 @@
-# Hyperparameter tuning
+# Controlled Vocabulary (CCV) recongition - Use case: GR
 
-This is the implementation code for hyperparameter optimization framework for tuning sklearn models using Optuna. The dataset is splitted in a training set and a hold-out test. The tuning is performed on the training set (using k-fold stratified cross-validation) while the evaluation on the hold-out set.
+This is the implementation code for hyperparameter optimization framework for tuning sklearn models using Optuna for recognizing CCV classes. The dataset is splitted in a training set and a hold-out test. The tuning is performed on the training set (using k-fold stratified cross-validation) while the evaluation on the hold-out set.
 
-Currently, the available models are
-- XGBoost
-- Random-Forest
-but the code can be easily modified to include any sklearn model.
-
-All the results, figures and models are logged in MLflow.
+Currently, the available model is *XGBoost* but the code can be easily modified to include any sklearn model. All the results, figures and models are logged in MLflow.
 
 <br/>
 
@@ -21,20 +16,15 @@ There are many samplers available to tune your models. It still contains the sta
 - A Quasi-Monte Carlo Sampler
 - An Intersection Search Space Sampler
 
-More information can be fould in
-- https://towardsdatascience.com/mlops-with-optuna-b7c52d931b4b
-- https://towardsdatascience.com/hyper-parameter-optimization-with-optuna-4920d5732edf
-
-
-
-
 <br/>
 
 
 ## Data
 ---
 
-The toy-dataset used in this repository concern a multi-class classification problem contained in ``Data/dataset.csv``
+The dataset concern a multi-class classification problem (CCV classes identification) contained in ``Data/_20220711-021643-GRE.txt``
+
+
 
 <br/>
 
@@ -42,9 +32,8 @@ The toy-dataset used in this repository concern a multi-class classification pro
 ---
 
 - ``01. EDA.ipynb``: performs a Exploratory Data Analysis on the given dataset using sweetviz package
-- ``02. Random-Forest.ipynb`` hyperparameter tuning of Random-Forest model
-- ``03. XGBoost.ipynb`` hyperparameter tuning of XGBoost model
-- ``04. Explainability.ipynb`` loads a model from MLflow and provides local and global explainability information using LIME and SHAP methods.
+- ``02. XGBoost.ipynb`` hyperparameter tuning of XGBoost model
+information using LIME and SHAP methods.
 
 <br/>
 
@@ -64,12 +53,12 @@ The toy-dataset used in this repository concern a multi-class classification pro
 ```
     pip install -r requirements.txt
 ```
-4. Run jupyter notebooks
+4. Unzip the corresponding zip files for obtaining the data
+
+5. Run jupyter notebooks
 ```
-    01. EDA.ipynb
+    01. Data_preperation.ipynb
     02. XGBoost.ipynb
-    03. Random-Forest.ipynb
-    04. Explainability.ipynb
 ```
 
 
