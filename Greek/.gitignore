@@ -11,6 +11,9 @@ utils/__pycache__/
 Data/
 Data/*
 
+# artifacts
+artifacts/*
+
 # MLFlow
 # Figures/
 Performance

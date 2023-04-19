@@ -56,7 +56,7 @@ def cross_validation(model, X:np.ndarray=None, Y:np.ndarray=None, n_splits:int=3
                     eval_metric = 'auc', 
                     eval_set = [ (X[train], Y[train]), (X[test], Y[test]) ],
                     sample_weight = [weights[int(x)] for x in Y[train]],
-                    verbose = 100);
+                    verbose = False);
         elif (type(model).__name__ == 'LGBMClassifier'):
             model.fit(X[train], Y[train], 
                     eval_metric = 'logloss', 
@@ -142,3 +142,30 @@ def single_run(model, trainX:np.ndarray=None, trainY:np.ndarray=None, testX:np.n
   
     
     return model, train_results, test_results, CM, pred
+
+
+
+import os
+import shutil
+import stat
+def copyDirTree(root_src_dir,root_dst_dir):
+    """
+    Copy directory tree. Overwrites also read only files.
+    :param root_src_dir: source directory
+    :param root_dst_dir:  destination directory
+    """
+    for src_dir, dirs, files in os.walk(root_src_dir):
+        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+        if not os.path.exists(dst_dir):
+            os.makedirs(dst_dir)
+        for file_ in files:
+            src_file = os.path.join(src_dir, file_)
+            dst_file = os.path.join(dst_dir, file_)
+            if os.path.exists(dst_file):
+                try:
+                    os.remove(dst_file)
+                except PermissionError as exc:
+                    os.chmod(dst_file, stat.S_IWUSR)
+                    os.remove(dst_file)
+
+            shutil.copy(src_file, dst_dir)
