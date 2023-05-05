@@ -109,7 +109,7 @@ def single_run(model, trainX:np.ndarray=None, trainY:np.ndarray=None, testX:np.n
                 eval_metric = 'auc', 
                 eval_set = [ (trainX, trainY), (testX, testY) ],
                 sample_weight = [weights[int(x)] for x in trainY],
-                verbose = False);
+                verbose = 50);
     elif (type(model).__name__ == 'LGBMClassifier'):
         model.fit(trainX, trainY, 
                     eval_metric = 'logloss', 
