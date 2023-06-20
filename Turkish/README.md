@@ -59,6 +59,7 @@ information using LIME and SHAP methods.
 ```
     01. Data_preperation.ipynb
     02. XGBoost.ipynb
+    03. Inference.ipynb
 ```
 
 
@@ -74,7 +75,7 @@ information using LIME and SHAP methods.
 - scikit-learn==1.2.0
 - xgboost==1.7.3
 - lightgbm==3.3.5
-
+- spacy==3.5.3
 
 <br/>
 
