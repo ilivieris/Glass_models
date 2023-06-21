@@ -1,4 +1,4 @@
-# Model Deployment (Iris prediction) using FastAPI
+# Model Deployment (CCV prediction) using FastAPI
 
 *Scope*: Model deployment using FastAPI
 
