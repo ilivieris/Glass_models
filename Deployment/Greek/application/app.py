@@ -3,6 +3,7 @@ from typing import TypeVar
 from pydantic import BaseModel
 import pickle
 import spacy
+from application.utils import hard_rules_GR
 
 app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Greek)')
 
@@ -33,9 +34,9 @@ class Parameters():
         self.model_name = "Citizen controlled vocabulary model prediction (UC: Greek)"
         self.version    = "v1.0"
         self.author     = "NovelCore"
-        self.model_path = 'checkpoint/model.pkl'
+        self.model_path = 'Model/model.pkl'
         self.spacy_model = 'el_core_news_sm'
-        self.label_encoder_path = 'checkpoint/label_encoder.sav'
+        self.label_encoder_path = 'Model/Label_encoder.pkl'
 
         self.model = pickle.load(open(self.model_path, 'rb'))
         self.nlp = load_spacy_model(self.spacy_model)
@@ -48,7 +49,8 @@ class Inputs( BaseModel ):
     '''
         Creating a class for the attributes input to the ML model.
     '''
-    text: str = ''
+    value: str = ''
+    evidence_type: str = ''
 
 
 
@@ -84,11 +86,20 @@ async def get_model_response(data: Inputs):
     # Load model
     #
     try:
-        # Get embeddings
-        embeddings = args.nlp(data.dict()['text']).vector
-        # Get model's prediction
-        pred = args.model.predict(embeddings.reshape(1,-1))
-        pred = args.encoder.inverse_transform(pred)[0]
+        value = data.dict()['value']
+        evidence_type = data.dict()['evidence_type']
+
+        pred = hard_rules_GR(value, evidence_type)
+
+        if pred is None:
+            print('[INFO] Prediction was made by XGBoost model')
+            # Get embeddings
+            embeddings = args.nlp(value).vector
+            # Get model's prediction
+            pred = args.model.predict(embeddings.reshape(1,-1))
+            pred = args.encoder.inverse_transform(pred)[0]
+        else:
+            print('[INFO] Prediction was made using hard-rules')
 
     except Exception as e:
         raise HTTPException(

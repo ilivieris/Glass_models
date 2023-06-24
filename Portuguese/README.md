@@ -22,7 +22,8 @@ There are many samplers available to tune your models. It still contains the sta
 ## Data
 ---
 
-The dataset concern a multi-class classification problem (CCV classes identification) contained in ``Data/_20220711-021643-GRE.txt``
+The data concern a multi-class classification problem (CCV classes identification) is contained in ``Data``
+and can be downloaded from [Google Drive](https://drive.google.com/drive/folders/1RR-jJdNzljYKxXqHVVaWPtogKpHv-8D7)
 
 
 
@@ -31,9 +32,11 @@ The dataset concern a multi-class classification problem (CCV classes identifica
 ## Notebooks
 ---
 
-- ``01. EDA.ipynb``: performs a Exploratory Data Analysis on the given dataset using sweetviz package
-- ``02. XGBoost.ipynb`` hyperparameter tuning of XGBoost model
-information using LIME and SHAP methods.
+- ``01. Data_preperation.ipynb``: parses the original data and transforms them in a suitable form for training a ML model. The embeddings are calculated using SpaCy library. Additionally, not all classes are considered in the classification problem since most of them can be implemented using hard-rules.
+- ``02. Hard-rule evaluation.ipynb``: Evaluates the efficiency and accuracy of created hard-rules.
+- ``03. XGBoost.ipynb`` hyperparameter tuning of XGBoost model information using LIME and SHAP methods.
+- ``04. Model development.ipynb`` trains a XGBoost model with user selected hyper-paramater tuning on the whole dataset.
+- ``05. Inference.ipynb``: code for providing inference on user's input.
 
 <br/>
 
