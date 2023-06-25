@@ -3,7 +3,7 @@ from typing import TypeVar
 from pydantic import BaseModel
 import pickle
 import spacy
-from application.utils import hard_rules_GR
+from application.utils import hard_rules
 
 app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Greek)')
 
@@ -89,7 +89,7 @@ async def get_model_response(data: Inputs):
         value = data.dict()['value']
         evidence_type = data.dict()['evidence_type']
 
-        pred = hard_rules_GR(value, evidence_type)
+        pred = hard_rules(value, evidence_type)
 
         if pred is None:
             print('[INFO] Prediction was made by XGBoost model')

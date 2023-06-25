@@ -11,7 +11,7 @@ def contains_only_letters(string):
             return False
     return True
 
-def hard_rules_GR(text, Evidence_type):
+def hard_rules(text, Evidence_type):
     # Hard-rule for 'CCV:00012'
     if 'Greek' == text: return 'CCV:00012'
     # Hard-rule for 'CCV:00013'
