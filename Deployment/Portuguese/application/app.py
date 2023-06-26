@@ -2,24 +2,45 @@ from fastapi import FastAPI, HTTPException
 from typing import TypeVar
 from pydantic import BaseModel
 import pickle
+import joblib
 import spacy
-import spacyturk
+from application.utils import hard_rules
 
-app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Turkish)')
+app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Portuguese)')
+
+Model = TypeVar('Model')
+def load_spacy_model(model_name: str) -> Model:
+    """
+    Function which loads or downloads, the required nlp model, while disabling a list of unnecessary components.
+    
+    Parameters
+    ----------
+    model_name: path to spaCy model (str).
+
+    Returns
+    -------
+    nlp: the spacy nlp object (Model)
+    """
+    try:
+        nlp = spacy.load(model_name)
+    except OSError:
+        spacy.cli.download(model_name)
+        nlp = spacy.load(model_name)
+    return nlp
+
 
 
 class Parameters():
     def __init__( self ):
-        self.model_name = "Citizen controlled vocabulary model prediction (UC: Turkish)"
+        self.model_name = "Citizen controlled vocabulary model prediction (UC: Portuguese)"
         self.version    = "v1.0"
         self.author     = "NovelCore"
-        self.model_path = 'checkpoint/model.pkl'
-        self.spacy_model = 'tr_floret_web_md'
-        self.label_encoder_path = 'checkpoint/label_encoder.sav'
+        self.model_path = 'Model/model.joblib'
+        self.spacy_model = 'pt_core_news_sm'
+        self.label_encoder_path = 'Model/Label_encoder.pkl'
 
-        self.model = pickle.load(open(self.model_path, 'rb'))
-        spacyturk.download(self.spacy_model)
-        self.nlp = spacy.load(self.spacy_model)
+        self.model = joblib.load(open(self.model_path, 'rb'))
+        self.nlp = load_spacy_model(self.spacy_model)
         self.encoder = pickle.load(open(self.label_encoder_path, 'rb'))
 
 args = Parameters()
@@ -29,7 +50,8 @@ class Inputs( BaseModel ):
     '''
         Creating a class for the attributes input to the ML model.
     '''
-    text: str = ''
+    value: str = ''
+    evidence_type: str = ''
 
 
 
@@ -65,11 +87,17 @@ async def get_model_response(data: Inputs):
     # Load model
     #
     try:
-        # Get embeddings
-        embeddings = args.nlp(data.dict()['text']).vector
-        # Get model's prediction
-        pred = args.model.predict(embeddings.reshape(1,-1))
-        pred = args.encoder.inverse_transform(pred)[0]
+        value = data.dict()['value']
+        evidence_type = data.dict()['evidence_type']
+
+        pred = hard_rules(value, evidence_type)
+
+        if pred is None:
+            # Get embeddings
+            embeddings = args.nlp(value).vector
+            # Get model's prediction
+            pred = args.model.predict(embeddings.reshape(1,-1))
+            pred = args.encoder.inverse_transform(pred)[0]
 
     except Exception as e:
         raise HTTPException(
