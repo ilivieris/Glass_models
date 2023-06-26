@@ -38,8 +38,11 @@ class Parameters():
         self.spacy_model = 'el_core_news_sm'
         self.label_encoder_path = 'Model/Label_encoder.pkl'
 
+        # Load classification model
         self.model = pickle.load(open(self.model_path, 'rb'))
+        # Download & Load SpaCy model
         self.nlp = load_spacy_model(self.spacy_model)
+        # Load label encoder
         self.encoder = pickle.load(open(self.label_encoder_path, 'rb'))
 
 args = Parameters()
