@@ -4,43 +4,28 @@ from pydantic import BaseModel
 import pickle
 import joblib
 import spacy
+import spacyturk
 from application.utils import hard_rules
 
-app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Portuguese)')
-
-Model = TypeVar('Model')
-def load_spacy_model(model_name: str) -> Model:
-    """
-    Function which loads or downloads, the required nlp model, while disabling a list of unnecessary components.
-    
-    Parameters
-    ----------
-    model_name: path to spaCy model (str).
-
-    Returns
-    -------
-    nlp: the spacy nlp object (Model)
-    """
-    try:
-        nlp = spacy.load(model_name)
-    except OSError:
-        spacy.cli.download(model_name)
-        nlp = spacy.load(model_name)
-    return nlp
+app = FastAPI(title = 'Citizen controlled vocabulary model prediction (UC: Turkish)')
 
 
 
 class Parameters():
     def __init__( self ):
-        self.model_name = "Citizen controlled vocabulary model prediction (UC: Portuguese)"
+        self.model_name = "Citizen controlled vocabulary model prediction (UC: Turkish)"
         self.version    = "v1.0"
         self.author     = "NovelCore"
         self.model_path = 'Model/model.joblib'
-        self.spacy_model = 'pt_core_news_sm'
+        self.spacy_model = 'tr_floret_web_md'
         self.label_encoder_path = 'Model/Label_encoder.pkl'
 
+        # Load classification model
         self.model = joblib.load(open(self.model_path, 'rb'))
-        self.nlp = load_spacy_model(self.spacy_model)
+        # Download & Load SpaCy model
+        spacyturk.download(self.spacy_model)
+        self.nlp = spacy.load(self.spacy_model)
+        # Load label encoder
         self.encoder = pickle.load(open(self.label_encoder_path, 'rb'))
 
 args = Parameters()

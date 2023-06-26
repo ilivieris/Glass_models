@@ -6,7 +6,8 @@ WORKDIR /code
 # Copy files
 COPY main.py /code
 COPY requirements.txt /code
-COPY checkpoint /code/checkpoint
+COPY Model /code/Model
+COPY spacyturk /code/spacyturk
 COPY application /code/application
 
 RUN pip install -r requirements.txt

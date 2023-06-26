@@ -21,7 +21,7 @@ To check your application
 ```
 # curl -X GET http://localhost:8000/
 # curl -X GET http://localhost:8000/info
-# curl -X POST http://localhost:8000/predict -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\": \"Gülen\"}"
+# curl -X POST http://localhost:8000/predict -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\": \"Gülen\", \"evidence_type\": \"ID\"}"
   ```
 
 
