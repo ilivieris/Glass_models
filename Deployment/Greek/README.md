@@ -21,13 +21,13 @@ To check your application
 ```
 # curl -X GET http://localhost:8000/
 # curl -X GET http://localhost:8000/info
-# curl -X POST http://localhost:8000/predict -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\": \"Θεσσαλονίκη\", \"evidence_type\": \"ID\"}"
+# curl -X POST http://localhost:8000/predict -H "accept: application/json" -H "Content-Type: application/json" -d "{\"value\": \"Θεσσαλονίκη\", \"evidence_type\": \"ID\"}"
   ```
 
 
 ## View on http://localhost:8000/docs
 
-If you’ve successfully reached until here, you should have your image classifier API up and running on http://0.0.0.0:8000/docs/ and should have a similar looking page!
+If you’ve successfully reached until here, you should have your image classifier API up and running on http://localhost:8000/docs/ and should have a similar looking page!
 
 ### Main page
 

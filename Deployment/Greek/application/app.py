@@ -92,14 +92,11 @@ async def get_model_response(data: Inputs):
         pred = hard_rules(value, evidence_type)
 
         if pred is None:
-            print('[INFO] Prediction was made by XGBoost model')
             # Get embeddings
             embeddings = args.nlp(value).vector
             # Get model's prediction
             pred = args.model.predict(embeddings.reshape(1,-1))
             pred = args.encoder.inverse_transform(pred)[0]
-        else:
-            print('[INFO] Prediction was made using hard-rules')
 
     except Exception as e:
         raise HTTPException(
